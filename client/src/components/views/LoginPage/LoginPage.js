@@ -97,7 +97,6 @@ function LoginPage(props) {
           handleChange,
           handleBlur,
           handleSubmit,
-          handleReset,
         } = props;
         return (
           <div className="app">
