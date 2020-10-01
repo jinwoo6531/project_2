@@ -1,13 +1,21 @@
-import React from "react";
-import { FaCode } from "react-icons/fa";
+import React from 'react';
+import './styles.css';
 
 function LandingPage() {
   return (
     <>
       <div className="app">
-        <FaCode style={{ fontSize: "4rem" }} />
-        <br />
-        <span style={{ fontSize: "2rem" }}>Let's Start Coding!</span>
+        <section>
+          <div className="banner">
+            <img
+              src={require('./images/banner.png')}
+              alt="banner"
+              className="banner"
+              style={{ width: '100%' }}
+            />
+            <p>TestTestTestTestTestTestTestTestTestTest</p>
+          </div>
+        </section>
       </div>
     </>
   );
