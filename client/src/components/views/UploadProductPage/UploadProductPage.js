@@ -7,7 +7,7 @@ import Axios from 'axios';
 const { Title } = Typography;
 const { TextArea } = Input;
 
-function UploadProductPage() {
+function UploadProductPage(props) {
   const [Name, setName] = useState('');
   const [DescriptionValue, setDescriptionValue] = useState('');
   const [PriceValue, setPriceValue] = useState(0);
@@ -35,6 +35,37 @@ function UploadProductPage() {
   const updateImages = (newImages) => {
     setImages(newImages);
   };
+  const onSubmit = (event) => {
+    event.preventDefault();
+
+    if (
+      !Name ||
+      !DescriptionValue ||
+      !PriceValue ||
+      !ContinentValue ||
+      !Images
+    ) {
+      return alert('모든 값을 넣어주셔야 합니다!');
+    }
+
+    const body = {
+      writer: props.user.userData._id,
+      title: Name,
+      description: DescriptionValue,
+      price: PriceValue,
+      images: Images,
+      continents: ContinentValue,
+    };
+
+    Axios.post('/api/product/uploadProduct', body).then((response) => {
+      if (response.data.success) {
+        alert('상품 업로드에 성공했습니다.');
+        props.history.push('/');
+      } else {
+        alert('상품 업로드에 실패했습니다.');
+      }
+    });
+  };
   return (
     <>
       <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
@@ -42,8 +73,7 @@ function UploadProductPage() {
           <Title level={2}> 상품 업로드</Title>
         </div>
 
-        {/* <Form onSubmit={onSubmit}> */}
-        <Form>
+        <Form onSubmit={onSubmit}>
           {/* DropZone */}
           <FileUpload refreshFunction={updateImages} />
 
@@ -71,7 +101,7 @@ function UploadProductPage() {
           <br />
           <br />
 
-          {/* <Button onClick={onSubmit}>등록</Button> */}
+          <Button onClick={onSubmit}>등록</Button>
         </Form>
       </div>
     </>
