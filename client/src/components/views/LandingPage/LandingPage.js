@@ -1,11 +1,7 @@
 import React from 'react';
 
 function LandingPage() {
-  return (
-    <>
-      <div className="app">ㅎㅇㅎㅇ</div>
-    </>
-  );
+  return <></>;
 }
 
 export default LandingPage;
