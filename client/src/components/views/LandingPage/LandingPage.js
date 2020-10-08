@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Col, Row, Card, Meta } from 'antd';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const Header = styled.header`
   width: 80%;
@@ -20,7 +22,6 @@ const Container = styled.section`
 `;
 
 const MenuList = styled.div`
-  width: 25%;
   border-right: 1px solid #d2d2d2;
 `;
 
@@ -45,7 +46,42 @@ const MenuPhoto = styled.div`
   margin-left: 10px;
 `;
 
+const Span = styled.span`
+  align-items: center;
+`;
+
 function LandingPage() {
+  const [Products, setProducts] = useState([]);
+  useEffect(() => {
+    axios.post('/api/product/products').then((response) => {
+      if (response.data.success) {
+        setProducts(response.data.productInfo);
+      } else {
+        alert('상품 가져오기 실패!');
+      }
+    });
+  }, []);
+
+  //아이템 리스트
+  const renderCards = Products.map((product, index) => {
+    console.log(11, product);
+    return (
+      <Col lg={6} md={8} xs={20} key={index}>
+        <Card>
+          <img
+            style={{
+              width: '100%',
+              maxHeight: '100%',
+            }}
+            src={`http://localhost:5000/${product.images[0]}`}
+          />
+
+          <Span>{product.title}</Span>
+        </Card>
+      </Col>
+    );
+  });
+
   return (
     <>
       {/* 메뉴 */}
@@ -82,9 +118,7 @@ function LandingPage() {
 
           {/* content list */}
           <MenuPhoto>
-            <article>
-              <div>test</div>
-            </article>
+            <Row gutter={(16, 16)}>{renderCards}</Row>
           </MenuPhoto>
         </Container>
       </Wrapper>
