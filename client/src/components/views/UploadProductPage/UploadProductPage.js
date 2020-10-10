@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, Button, Form, message, Input, Icon } from 'antd';
+import { Typography, Button, Form, Input } from 'antd';
 import FileUpload from '../../utils/FileUpload';
 import { Continents } from './data';
 import Axios from 'axios';

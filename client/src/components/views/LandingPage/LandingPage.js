@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Col, Row, Card, Meta } from 'antd';
 import styled from 'styled-components';
 import axios from 'axios';
+import Checkbox from './Sections/CheckBox';
+import { continents } from './Sections/Datas';
 
 const Header = styled.header`
   width: 80%;
@@ -21,25 +23,6 @@ const Container = styled.section`
   display: flex;
 `;
 
-const MenuList = styled.div`
-  border-right: 1px solid #d2d2d2;
-`;
-
-const Ul = styled.ul`
-  list-style: none;
-`;
-
-const Anchor = styled.a`
-  color: #333;
-`;
-
-const Li = styled.li`
-  margin-bottom: 50px;
-  font-family: Century -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-weight: 700;
-`;
-
 const MenuPhoto = styled.div`
   display: flex;
   width: 100%;
@@ -47,8 +30,10 @@ const MenuPhoto = styled.div`
 `;
 
 const Span = styled.span`
-  align-items: center;
+  margin: 0 auto;
 `;
+
+const Img = styled.img``;
 
 function LandingPage() {
   const [Products, setProducts] = useState([]);
@@ -64,7 +49,7 @@ function LandingPage() {
 
   //아이템 리스트
   const renderCards = Products.map((product, index) => {
-    console.log(11, product);
+    console.log(product);
     return (
       <Col lg={6} md={8} xs={20} key={index}>
         <Card>
@@ -82,6 +67,8 @@ function LandingPage() {
     );
   });
 
+  const handleFilters = () => {};
+
   return (
     <>
       {/* 메뉴 */}
@@ -91,31 +78,13 @@ function LandingPage() {
         </h2>
       </Header>
 
+      <Checkbox
+        list={continents}
+        // handleFilters={(filter) => handleFilters(filters, 'continents')}
+      />
+
       <Wrapper>
         <Container>
-          <MenuList>
-            <Ul>
-              <Li>
-                <Anchor href="#">COFFEE</Anchor>
-              </Li>
-              <Li>
-                <Anchor href="#">DECAFFEINE COFFEE</Anchor>
-              </Li>
-              <Li>
-                <Anchor href="#">MILK TEA & LATTE</Anchor>
-              </Li>
-              <Li>
-                <Anchor href="#">JUICE & YOGHURT</Anchor>
-              </Li>
-              <Li>
-                <Anchor href="#">BANACCINO & SMOTHIE</Anchor>
-              </Li>
-              <Li>
-                <Anchor href="#">TEA & ADE</Anchor>
-              </Li>
-            </Ul>
-          </MenuList>
-
           {/* content list */}
           <MenuPhoto>
             <Row gutter={(16, 16)}>{renderCards}</Row>
