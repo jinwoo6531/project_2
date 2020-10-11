@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Col, Row, Card, Meta } from 'antd';
 import styled from 'styled-components';
 import axios from 'axios';
-import Checkbox from './Sections/CheckBox';
+import CheckBox from './Sections/CheckBox';
 import { continents } from './Sections/Datas';
 
 const Header = styled.header`
@@ -33,19 +33,24 @@ const Span = styled.span`
   margin: 0 auto;
 `;
 
-const Img = styled.img``;
-
 function LandingPage() {
   const [Products, setProducts] = useState([]);
+  const [Filters, setFilters] = useState({
+    continents: [],
+  });
   useEffect(() => {
+    getProducts();
+  }, []);
+
+  const getProducts = () => {
     axios.post('/api/product/products').then((response) => {
       if (response.data.success) {
-        setProducts(response.data.productInfo);
+        setProducts([...Products, ...response.data.productInfo]);
       } else {
-        alert('상품 가져오기 실패!');
+        alert('Failed to fectch product datas');
       }
     });
-  }, []);
+  };
 
   //아이템 리스트
   const renderCards = Products.map((product, index) => {
@@ -66,8 +71,23 @@ function LandingPage() {
       </Col>
     );
   });
+  const showFilteredResults = (filters) => {
+    const variables = {
+      filters: filters,
+    };
+    getProducts(variables);
+  };
 
-  const handleFilters = () => {};
+  const handleFilters = (filters, category) => {
+    const newFilters = { ...Filters };
+
+    newFilters[category] = filters;
+
+    console.log(newFilters);
+
+    showFilteredResults(newFilters);
+    setFilters(newFilters);
+  };
 
   return (
     <>
@@ -78,9 +98,9 @@ function LandingPage() {
         </h2>
       </Header>
 
-      <Checkbox
+      <CheckBox
         list={continents}
-        // handleFilters={(filter) => handleFilters(filters, 'continents')}
+        handleFilters={(filters) => handleFilters(filters, 'continents')}
       />
 
       <Wrapper>
