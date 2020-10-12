@@ -53,12 +53,39 @@ router.post('/uploadProduct', (req, res) => {
 });
 
 router.post('/products', (req, res) => {
+  let limit = req.body.limit ? parseInt(req.body.limit) : 100;
+  let skip = parseInt(req.body.skip);
   //product collection에 들어 있는 모든 상품 정보를 가져오기
-  Product.find()
+
+  let findArgs = {};
+
+  for (let key in req.body.filters) {
+    if (req.body.filters[key].length > 0) {
+      findArgs[key] = req.body.filters[key];
+    }
+  }
+
+  Product.find(findArgs)
     .populate('writer')
+    .skip(skip)
+    .limit(limit)
     .exec((err, productInfo) => {
       if (err) return res.status(400).json({ success: false, err });
-      return res.status(200).json({ success: true, productInfo });
+      res.status(200).json({ success: true, productInfo });
+    });
+});
+
+router.get('/products_by_id', (req, res) => {
+  let type = req.query.type;
+  let productId = req.query.id;
+
+  //productId를 이용해서 DB에서 productId와 같은 상품의 정보를 가져온다.
+
+  Product.find({ _id: productId })
+    .populate('writer')
+    .exec((err, product) => {
+      if (err) return res.status(400).send(err);
+      return res.status(200).send({ success: true, product });
     });
 });
 

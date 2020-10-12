@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Col, Row, Card, Meta } from 'antd';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -35,58 +36,82 @@ const Span = styled.span`
 
 function LandingPage() {
   const [Products, setProducts] = useState([]);
+  const [Skip, setSkip] = useState(0);
+  const [Limit, setLimit] = useState(8);
+  const [PostSize, setPostSize] = useState();
+  const [SearchTerms, setSearchTerms] = useState('');
   const [Filters, setFilters] = useState({
     continents: [],
   });
   useEffect(() => {
-    getProducts();
+    const variables = {
+      skip: Skip,
+      limit: Limit,
+    };
+
+    getProducts(variables);
   }, []);
 
-  const getProducts = () => {
-    axios.post('/api/product/products').then((response) => {
+  const getProducts = async (variables) => {
+    await axios.post('/api/product/products', variables).then((response) => {
       if (response.data.success) {
-        setProducts([...Products, ...response.data.productInfo]);
-      } else {
-        alert('Failed to fectch product datas');
+        setProducts([...response.data.productInfo]);
       }
     });
   };
 
   //아이템 리스트
   const renderCards = Products.map((product, index) => {
-    console.log(product);
     return (
       <Col lg={6} md={8} xs={20} key={index}>
         <Card>
-          <img
-            style={{
-              width: '100%',
-              maxHeight: '100%',
-            }}
-            src={`http://localhost:5000/${product.images[0]}`}
-          />
+          <Link to={`/product/${product._id}`}>
+            <img
+              style={{
+                width: '100%',
+                maxHeight: '100%',
+              }}
+              src={`http://localhost:5000/${product.images[0]}`}
+            />
 
-          <Span>{product.title}</Span>
+            <Span>{product.title}</Span>
+          </Link>
         </Card>
       </Col>
     );
   });
   const showFilteredResults = (filters) => {
     const variables = {
+      skip: 0,
+      limit: Limit,
       filters: filters,
     };
     getProducts(variables);
+    setSkip(0);
   };
 
+  //매개변수filters는 CheckBox컴포넌트의 체크된 id값들이다.
   const handleFilters = (filters, category) => {
     const newFilters = { ...Filters };
 
     newFilters[category] = filters;
 
-    console.log(newFilters);
-
     showFilteredResults(newFilters);
     setFilters(newFilters);
+  };
+
+  const onLoadMore = () => {
+    let skip = Skip + Limit;
+
+    const variables = {
+      skip: skip,
+      limit: Limit,
+      loadMore: true,
+      filters: Filters,
+      searchTerm: SearchTerms,
+    };
+    getProducts(variables);
+    setSkip(skip);
   };
 
   return (
@@ -108,6 +133,11 @@ function LandingPage() {
           {/* content list */}
           <MenuPhoto>
             <Row gutter={(16, 16)}>{renderCards}</Row>
+            {PostSize >= Limit && (
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <button onClick={onLoadMore}>Load More</button>
+              </div>
+            )}
           </MenuPhoto>
         </Container>
       </Wrapper>
