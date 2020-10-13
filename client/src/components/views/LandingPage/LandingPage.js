@@ -7,12 +7,12 @@ import CheckBox from './Sections/CheckBox';
 import { continents } from './Sections/Datas';
 
 const Header = styled.header`
-  width: 80%;
-  margin: 0 auto;
+  width: 100%;
+  margin-top: 20px;
   border-bottom: 1px solid #d2d2d2;
 `;
 const Wrapper = styled.div`
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: row;

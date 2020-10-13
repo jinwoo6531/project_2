@@ -1,14 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Button, Descriptions } from 'antd';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../../../_actions/user_actions';
 
 const Btn = styled.div`
   display: flex;
   justify-content: center;
 `;
 function ProductInfo(props) {
+  const dispatch = useDispatch();
+
   const clickHandler = () => {
-    console.log(test);
+    //필요한 정보를 Cart 필드에다가 넣어준다.
+    dispatch(addToCart(props.detail._id));
+    alert('장바구니에 추가되었습니다.');
   };
   return (
     <div>
@@ -28,7 +34,7 @@ function ProductInfo(props) {
       <br />
       <Btn>
         <Button size="large" shape="round" type="danger" onClick={clickHandler}>
-          Add to Cart
+          장바구니
         </Button>
       </Btn>
     </div>
