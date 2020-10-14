@@ -7,12 +7,12 @@ import CheckBox from './Sections/CheckBox';
 import { continents } from './Sections/Datas';
 
 const Header = styled.header`
-  width: 100%;
-  margin-top: 20px;
+  width: 80%;
+  margin: 0 auto;
   border-bottom: 1px solid #d2d2d2;
 `;
 const Wrapper = styled.div`
-  width: 100%;
+  width: 80%;
   margin: 0 auto;
   display: flex;
   flex-direction: row;
@@ -117,6 +117,8 @@ function LandingPage() {
   return (
     <>
       {/* 메뉴 */}
+      <br />
+      <br />
       <Header>
         <h2>
           <img src={require('./images/tit_menu.png')} alt="Menu 이미지" />

@@ -31,7 +31,7 @@ function CheckBox(props) {
       </React.Fragment>
     ));
   return (
-    <div>
+    <div style={{ width: '80%', margin: '0 auto' }}>
       <Collapse defaultActiveKey={['0']}>
         <Panel header="메뉴 고르기~!" key="1">
           {renderCheckboxLists()}
